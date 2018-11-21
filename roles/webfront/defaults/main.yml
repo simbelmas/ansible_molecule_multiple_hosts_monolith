@@ -1,0 +1,4 @@
+---
+# defaults file for webfront
+configure_dynamic: no
+fpm_host_ip:

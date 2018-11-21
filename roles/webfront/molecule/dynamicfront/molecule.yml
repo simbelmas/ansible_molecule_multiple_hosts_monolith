@@ -1,0 +1,30 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: site
+    box: generic/ubuntu1604
+    groups:
+      - parsers
+  - name: front
+    box: generic/ubuntu1604
+    groups:
+      - fronts
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: ../../../../webapp.yml
+scenario:
+  name: dynamicfront
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

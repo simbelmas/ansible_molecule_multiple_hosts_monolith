@@ -1,0 +1,18 @@
+---
+# tasks file for webfront
+- name: install nginx
+  package:
+    name: nginx
+    state: present
+
+- name: configure php fpm
+  template:
+    src: nginx_fpm.j2
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
+
+- name: enable and start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes

@@ -1,0 +1,37 @@
+---
+- name: install site
+  hosts: parsers
+  roles:
+    - name: php
+      become: yes
+
+- name: install fronts
+  hosts: fronts
+  roles:
+    - name: webfront
+      become: yes
+      configure_dynamic: yes
+      fpm_host_ip: "{{ hostvars[groups['parsers'][0]].ansible_default_ipv4.address }}"
+
+- name: create fake site
+  #to be practical, file are identical on nginx and if fpm as if they're on the same host
+  hosts: all
+  tasks:
+  - name: create /var/ww dir
+    become: yes
+    file:
+      path: /var/www/html
+      mode: 0755
+      owner: www-data
+      group: www-data
+      state: directory
+  - name: create dummy php site
+    become: yes
+    copy:
+      dest: /var/www/html/index.php
+      content: |
+        <?php
+        phpinfo();
+        ?>
+      owner: www-data
+      group: www-data

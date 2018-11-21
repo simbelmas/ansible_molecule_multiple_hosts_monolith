@@ -1,0 +1,6 @@
+---
+# handlers file for webfront
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

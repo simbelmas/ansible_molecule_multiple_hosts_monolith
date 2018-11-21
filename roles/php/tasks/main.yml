@@ -1,0 +1,21 @@
+---
+# tasks file for php
+- name: install php and php fpm
+  package:
+    name:
+      - php7.0
+      - php7.0-fpm
+    state: present
+
+- name: listen to port instead of socket
+  lineinfile:
+    path: /etc/php/7.0/fpm/pool.d/www.conf
+    regexp: '^listen'
+    line: 'listen = 9000'
+  notify: restart fpm
+
+- name: enable php-fpm
+  service:
+    name: php7.0-fpm
+    state: started
+    enabled: yes
